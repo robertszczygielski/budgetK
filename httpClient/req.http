@@ -1,0 +1,19 @@
+GET http://localhost:8080/assets
+
+###
+POST http://localhost:8080/assets
+Content-Type: application/json
+
+[
+  {
+    "amount": 100.0,
+    "category": "RENT",
+    "incomeDate": "2020-02-02T10:10:10.001Z",
+    "description": "desc"
+  },{
+  "amount": 101.0,
+  "category": "RENT",
+  "incomeDate": "2020-02-02T10:10:10.001Z",
+  "description": "desc"
+  }
+]
