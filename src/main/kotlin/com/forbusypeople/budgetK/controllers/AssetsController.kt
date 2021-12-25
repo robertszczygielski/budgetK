@@ -1,21 +1,30 @@
 package com.forbusypeople.budgetK.controllers
 
+import com.forbusypeople.budgetK.enums.AssetCategory
 import com.forbusypeople.budgetK.services.AssetsService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
+import java.time.Instant
+import java.util.*
 
 @RestController
 @RequestMapping("/assets")
 class AssetsController(
-    val assetsService: AssetsService
+    private val assetsService: AssetsService
 ) {
 
     @GetMapping
     fun getAllAssets() = assetsService.getAssets()
 
+    @PostMapping
+    fun saveAllAssets(@RequestBody dtoList: List<AssetDto>) = assetsService.saveAssets(dtoList)
+
 }
 
 data class AssetDto(
-    val amount: Int
+    val id: UUID?,
+    val amount: BigDecimal,
+    val category: AssetCategory,
+    val incomeDate: Instant,
+    val description: String
 )
