@@ -1,6 +1,9 @@
 package com.forbusypeople.budgetK.services
 
+import com.forbusypeople.budgetK.controllers.ExpenseDto
+import com.forbusypeople.budgetK.controllers.ExpensesCategoryDto
 import com.forbusypeople.budgetK.repository.ExpenseEntity
+import com.forbusypeople.budgetK.repository.ExpensesCategoryEntity
 import com.forbusypeople.budgetK.repository.ExpensesCategoryRepository
 import com.forbusypeople.budgetK.repository.ExpensesRepository
 import org.springframework.stereotype.Service
@@ -10,6 +13,11 @@ import java.util.*
 
 interface ExpenseService {
     fun saveAll(dtoList: List<ExpenseDto>)
+    fun getAll(): List<ExpenseDto>
+}
+
+interface ExpensesCategoryService{
+    fun getAll(): List<ExpensesCategoryDto>
 }
 
 @Service
@@ -27,20 +35,40 @@ class ExpenseServiceImpl(
             }
         )
     }
+
+    override fun getAll(): List<ExpenseDto> = expensesRepository.findAll()
+        .map {
+            it.toDto(
+                expensesCategoryRepository.findById(it.expensesCategory).get().name
+            )
+        }
 }
+
+@Service
+class ExpensesCategoryServiceImpl(
+    private val expensesCategoryRepository: ExpensesCategoryRepository
+): ExpensesCategoryService {
+    override fun getAll(): List<ExpensesCategoryDto> = expensesCategoryRepository.findAll()
+        .map { it.toDto() }
+}
+
+private fun ExpensesCategoryEntity.toDto() = ExpensesCategoryDto(
+    id = this.id,
+    name = this.name
+)
+
+
+private fun ExpenseEntity.toDto(categoryName: String) = ExpenseDto(
+    id = this.id,
+    amount = this.amount,
+    description = this.description,
+    purchaseDate = this.purchaseDate,
+    expensesCategory = categoryName
+)
 
 private fun ExpenseDto.toEntity(categoryId: UUID) = ExpenseEntity(
     amount = this.amount,
     description = this.description,
     purchaseDate = this.purchaseDate,
     expensesCategory = categoryId
-)
-
-// TODO: Move to Controller;
-data class ExpenseDto(
-    val id: UUID?,
-    val amount: BigDecimal,
-    val description: String,
-    val purchaseDate: Instant,
-    val expensesCategory: String,
 )

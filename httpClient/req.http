@@ -17,3 +17,22 @@ Content-Type: application/json
   "description": "desc"
   }
 ]
+
+### GET All Expenses Category
+GET http://localhost:8080/expenses/category
+
+### GET All Expenses
+GET  http://localhost:8080/expenses
+
+### POST Expense
+POST http://localhost:8080/expenses
+Content-Type: application/json
+
+[
+  {
+    "amount": 200,
+    "description": "some desc",
+    "purchaseDate": "2020-02-02T10:10:10.001Z",
+    "expensesCategory": "FUN"
+  }
+]
