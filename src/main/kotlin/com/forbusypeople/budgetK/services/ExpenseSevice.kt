@@ -14,6 +14,7 @@ import java.util.*
 interface ExpenseService {
     fun saveAll(dtoList: List<ExpenseDto>)
     fun getAll(): List<ExpenseDto>
+    fun getExpensesByCategory(id: UUID): List<ExpenseDto>
 }
 
 interface ExpensesCategoryService{
@@ -37,6 +38,13 @@ class ExpenseServiceImpl(
     }
 
     override fun getAll(): List<ExpenseDto> = expensesRepository.findAll()
+        .map {
+            it.toDto(
+                expensesCategoryRepository.findById(it.expensesCategory).get().name
+            )
+        }
+
+    override fun getExpensesByCategory(id: UUID) = expensesRepository.findByExpensesCategory(id)
         .map {
             it.toDto(
                 expensesCategoryRepository.findById(it.expensesCategory).get().name

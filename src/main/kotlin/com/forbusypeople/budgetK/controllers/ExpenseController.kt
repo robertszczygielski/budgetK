@@ -19,6 +19,9 @@ class ExpenseController(
     @PostMapping
     fun saveAll(@RequestBody dtoList: List<ExpenseDto>) = expenseService.saveAll(dtoList)
 
+    @GetMapping("/filter")
+    fun getExpensesByCategory(@RequestParam("category") id: UUID) = expenseService.getExpensesByCategory(id)
+
 }
 
 @RestController

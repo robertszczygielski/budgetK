@@ -7,7 +7,11 @@ import java.math.BigDecimal
 import java.time.Instant
 import java.util.*
 
-interface ExpensesRepository: MongoRepository<ExpenseEntity, UUID>
+interface ExpensesRepository: MongoRepository<ExpenseEntity, UUID> {
+
+    fun findByExpensesCategory(expensesCategory: UUID): List<ExpenseEntity>
+
+}
 
 interface ExpensesCategoryRepository: MongoRepository<ExpensesCategoryEntity, UUID>
 
