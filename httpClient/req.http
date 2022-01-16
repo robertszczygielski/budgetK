@@ -33,6 +33,10 @@ Content-Type: application/json
     "amount": 200,
     "description": "some desc",
     "purchaseDate": "2020-02-02T10:10:10.001Z",
-    "expensesCategory": "FUN"
+    "expensesCategory": "OTHERS"
   }
 ]
+
+
+### GET All Expenses by category
+GET  http://localhost:8080/expenses/filter?category=a6715e02-6576-49d8-9809-04df91257160
