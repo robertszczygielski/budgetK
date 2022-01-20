@@ -20,7 +20,7 @@ class ExpenseController(
     fun saveAll(@RequestBody dtoList: List<ExpenseDto>) = expenseService.saveAll(dtoList)
 
     @GetMapping("/filter")
-    fun getExpensesByCategory(@RequestParam("category") id: UUID) = expenseService.getExpensesByCategory(id)
+    fun getExpensesByCategory(@RequestParam("category") name: String) = expenseService.getExpensesByCategory(name)
 
 }
 
