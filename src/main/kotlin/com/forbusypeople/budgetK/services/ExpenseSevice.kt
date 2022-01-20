@@ -7,14 +7,12 @@ import com.forbusypeople.budgetK.repository.ExpensesCategoryEntity
 import com.forbusypeople.budgetK.repository.ExpensesCategoryRepository
 import com.forbusypeople.budgetK.repository.ExpensesRepository
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
-import java.time.Instant
 import java.util.*
 
 interface ExpenseService {
     fun saveAll(dtoList: List<ExpenseDto>)
     fun getAll(): List<ExpenseDto>
-    fun getExpensesByCategory(id: UUID): List<ExpenseDto>
+    fun getExpensesByCategory(name: String): List<ExpenseDto>
 }
 
 interface ExpensesCategoryService{
@@ -44,7 +42,9 @@ class ExpenseServiceImpl(
             )
         }
 
-    override fun getExpensesByCategory(id: UUID) = expensesRepository.findByExpensesCategory(id)
+    override fun getExpensesByCategory(name: String) = expensesRepository.findByExpensesCategory(
+        expensesCategoryRepository.findByName(name.uppercase()).first().id
+    )
         .map {
             it.toDto(
                 expensesCategoryRepository.findById(it.expensesCategory).get().name

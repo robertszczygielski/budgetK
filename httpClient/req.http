@@ -39,4 +39,4 @@ Content-Type: application/json
 
 
 ### GET All Expenses by category
-GET  http://localhost:8080/expenses/filter?category=a6715e02-6576-49d8-9809-04df91257160
+GET  http://localhost:8080/expenses/filter?category=fun

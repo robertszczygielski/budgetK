@@ -13,7 +13,11 @@ interface ExpensesRepository: MongoRepository<ExpenseEntity, UUID> {
 
 }
 
-interface ExpensesCategoryRepository: MongoRepository<ExpensesCategoryEntity, UUID>
+interface ExpensesCategoryRepository: MongoRepository<ExpensesCategoryEntity, UUID> {
+
+    fun findByName(name: String): List<ExpensesCategoryEntity>
+
+}
 
 @Document("Expense")
 data class ExpenseEntity(
