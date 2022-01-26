@@ -42,14 +42,19 @@ class ExpenseServiceImpl(
             )
         }
 
-    override fun getExpensesByCategory(name: String) = expensesRepository.findByExpensesCategory(
-        expensesCategoryRepository.findByName(name.uppercase()).first().id
-    )
-        .map {
-            it.toDto(
-                expensesCategoryRepository.findById(it.expensesCategory).get().name
-            )
-        }
+    override fun getExpensesByCategory(name: String) =
+        expensesCategoryRepository.findByName(name.uppercase())
+            .firstOrNull()
+            ?.let {
+                expensesRepository.findByExpensesCategory(
+                    it.id
+                )
+                    .map { entity ->
+                        entity.toDto(
+                            expensesCategoryRepository.findById(entity.expensesCategory).get().name
+                        )
+                    }
+            }.orEmpty()
 }
 
 @Service
