@@ -54,4 +54,66 @@ class ExpenseServiceImplTest {
         )
 
     }
+
+    @Test
+    internal fun shouldGetAllExpensesAndMapFromEntityToDtoByCategoryName() {
+        // given
+        val expectedAmount = BigDecimal.TEN
+        val expectedCategory = "myCategory"
+        val categoryId = UUID.randomUUID()
+
+        val allEntity = listOf(
+            ExpenseEntity(
+                UUID.randomUUID(),
+                expectedAmount,
+                "myDesc",
+                Instant.now(),
+                categoryId
+            )
+        )
+
+        val categoryEntity = ExpensesCategoryEntity(
+            categoryId,
+            expectedCategory
+        )
+
+        val expensesRepository = mockk<ExpensesRepository>()
+        val expensesCategoryRepository = mockk<ExpensesCategoryRepository>()
+
+        every { expensesRepository.findByExpensesCategory(categoryId) } returns allEntity
+        every { expensesCategoryRepository.findByName(expectedCategory.uppercase()) } returns listOf(categoryEntity)
+        every { expensesCategoryRepository.findById(categoryId) } returns Optional.of(categoryEntity)
+
+        val expenseService = ExpenseServiceImpl(expensesRepository, expensesCategoryRepository)
+
+        // when
+        val allDto = expenseService.getExpensesByCategory(expectedCategory)
+
+        // then
+        assertAll(
+            { assertEquals(allDto.get(0).amount, expectedAmount) },
+            { assertEquals(allDto.get(0).expensesCategory, expectedCategory) }
+        )
+
+    }
+
+    @Test
+    internal fun shouldReturnEmptyListIfThereAreNoExpensesByCategory() {
+        // given
+        val expectedCategory = "myCategory"
+
+        val expensesRepository = mockk<ExpensesRepository>()
+        val expensesCategoryRepository = mockk<ExpensesCategoryRepository>()
+
+        every { expensesCategoryRepository.findByName(expectedCategory.uppercase()) } returns emptyList()
+
+        val expenseService = ExpenseServiceImpl(expensesRepository, expensesCategoryRepository)
+
+        // when
+        val allDto = expenseService.getExpensesByCategory(expectedCategory)
+
+        // then
+        assertEquals(allDto.size, 0)
+
+    }
 }
