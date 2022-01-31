@@ -1,5 +1,8 @@
 GET http://localhost:8080/assets
 
+### Delete assets
+DELETE http://localhost:8080/assets/55719200-5328-455b-b74d-1c31cb8a1a11
+
 ###
 POST http://localhost:8080/assets
 Content-Type: application/json
@@ -23,6 +26,9 @@ GET http://localhost:8080/expenses/category
 
 ### GET All Expenses
 GET  http://localhost:8080/expenses
+
+### Delete Expense
+DELETE http://localhost:8080/expenses/69b22b00-ae72-4202-95d5-97d2e8726aae
 
 ### POST Expense
 POST http://localhost:8080/expenses

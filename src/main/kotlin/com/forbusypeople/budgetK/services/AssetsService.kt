@@ -4,10 +4,12 @@ import com.forbusypeople.budgetK.controllers.AssetDto
 import com.forbusypeople.budgetK.repository.AssetEntity
 import com.forbusypeople.budgetK.repository.AssetsRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 interface AssetsService {
     fun getAssets(): List<AssetDto>
     fun saveAssets(dtoList: List<AssetDto>)
+    fun deleteAsset(id: UUID)
 }
 
 @Service
@@ -20,6 +22,8 @@ class AssetServiceImpl(
     override fun saveAssets(dtoList: List<AssetDto>) {
         assetsRepository.saveAll(dtoList.map { it.toEntity() })
     }
+
+    override fun deleteAsset(id: UUID) = assetsRepository.deleteById(id)
 
 }
 

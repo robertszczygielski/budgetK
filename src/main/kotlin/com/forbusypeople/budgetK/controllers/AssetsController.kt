@@ -19,6 +19,8 @@ class AssetsController(
     @PostMapping
     fun saveAllAssets(@RequestBody dtoList: List<AssetDto>) = assetsService.saveAssets(dtoList)
 
+    @DeleteMapping("/{id}")
+    fun deleteAsset(@PathVariable("id") id: UUID) = assetsService.deleteAsset(id)
 }
 
 data class AssetDto(
