@@ -22,6 +22,9 @@ class ExpenseController(
     @GetMapping("/filter")
     fun getExpensesByCategory(@RequestParam("category") name: String) = expenseService.getExpensesByCategory(name)
 
+    @DeleteMapping("/{id}")
+    fun deleteExpenses(@PathVariable("id") id: UUID) = expenseService.deleteExpense(id)
+
 }
 
 @RestController

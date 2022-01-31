@@ -13,6 +13,7 @@ interface ExpenseService {
     fun saveAll(dtoList: List<ExpenseDto>)
     fun getAll(): List<ExpenseDto>
     fun getExpensesByCategory(name: String): List<ExpenseDto>
+    fun deleteExpense(id: UUID)
 }
 
 interface ExpensesCategoryService{
@@ -55,6 +56,9 @@ class ExpenseServiceImpl(
                         )
                     }
             }.orEmpty()
+
+    override fun deleteExpense(id: UUID) = expensesRepository.deleteById(id)
+
 }
 
 @Service
