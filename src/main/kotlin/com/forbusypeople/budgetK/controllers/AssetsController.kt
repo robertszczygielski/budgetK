@@ -21,6 +21,9 @@ class AssetsController(
 
     @DeleteMapping("/{id}")
     fun deleteAsset(@PathVariable("id") id: UUID) = assetsService.deleteAsset(id)
+
+    @PutMapping
+    fun updateAsset(@RequestBody dto: AssetDto) = assetsService.updateAsset(dto)
 }
 
 data class AssetDto(

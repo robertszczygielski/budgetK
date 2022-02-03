@@ -10,14 +10,15 @@ interface AssetsService {
     fun getAssets(): List<AssetDto>
     fun saveAssets(dtoList: List<AssetDto>)
     fun deleteAsset(id: UUID)
+    fun updateAsset(dto: AssetDto)
 }
 
 @Service
 class AssetServiceImpl(
     private val assetsRepository: AssetsRepository
-): AssetsService {
+) : AssetsService {
     override fun getAssets(): List<AssetDto> = assetsRepository.findAll()
-        .map{ it.toDto() }
+        .map { it.toDto() }
 
     override fun saveAssets(dtoList: List<AssetDto>) {
         assetsRepository.saveAll(dtoList.map { it.toEntity() })
@@ -25,6 +26,20 @@ class AssetServiceImpl(
 
     override fun deleteAsset(id: UUID) = assetsRepository.deleteById(id)
 
+    override fun updateAsset(dto: AssetDto) {
+        val entity = assetsRepository.findById(dto.id!!).get()
+        assetsRepository.save(entity.updateByDto(dto))
+    }
+
+}
+
+private fun AssetEntity.updateByDto(dto: AssetDto): AssetEntity {
+    this.category = dto.category
+    this.amount = dto.amount
+    this.description = dto.description
+    this.incomeDate = dto.incomeDate
+
+    return this
 }
 
 private fun AssetDto.toEntity() = AssetEntity(

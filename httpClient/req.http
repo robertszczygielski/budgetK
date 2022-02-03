@@ -21,6 +21,18 @@ Content-Type: application/json
   }
 ]
 
+### PUT Asset
+PUT http://localhost:8080/assets
+Content-Type: application/json
+
+{
+  "id": "37a9b49b-a18f-4013-a1a7-59141916d034",
+  "amount": 100.0,
+  "category": "RENT",
+  "incomeDate": "2020-03-02T10:10:10.001Z",
+  "description": "desc"
+}
+
 ### GET All Expenses Category
 GET http://localhost:8080/expenses/category
 

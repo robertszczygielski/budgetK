@@ -14,8 +14,8 @@ interface AssetsRepository: MongoRepository<AssetEntity, UUID>
 data class AssetEntity(
     @Id
     val id: UUID = UUID.randomUUID(),
-    val amount: BigDecimal,
-    val category: AssetCategory,
-    val incomeDate: Instant,
-    val description: String
+    var amount: BigDecimal,
+    var category: AssetCategory,
+    var incomeDate: Instant,
+    var description: String
 )
