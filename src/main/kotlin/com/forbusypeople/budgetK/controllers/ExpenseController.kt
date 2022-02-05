@@ -25,6 +25,9 @@ class ExpenseController(
     @DeleteMapping("/{id}")
     fun deleteExpenses(@PathVariable("id") id: UUID) = expenseService.deleteExpense(id)
 
+    @PutMapping
+    fun updateExpense(@RequestBody dto: ExpenseDto) = expenseService.updateExpense(dto)
+
 }
 
 @RestController
