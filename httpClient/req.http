@@ -55,6 +55,18 @@ Content-Type: application/json
   }
 ]
 
+### PUT Expense
+PUT http://localhost:8080/expenses
+Content-Type: application/json
+
+  {
+    "id": "dffb93d9-c105-48db-a672-90fda501311d",
+    "amount": 1200,
+    "description": "some desc",
+    "purchaseDate": "2020-02-02T10:10:10.001Z",
+    "expensesCategory": "OTHERS"
+  }
+
 
 ### GET All Expenses by category
 GET  http://localhost:8080/expenses/filter?category=fun

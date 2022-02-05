@@ -14,6 +14,7 @@ interface ExpenseService {
     fun getAll(): List<ExpenseDto>
     fun getExpensesByCategory(name: String): List<ExpenseDto>
     fun deleteExpense(id: UUID)
+    fun updateExpense(dto: ExpenseDto)
 }
 
 interface ExpensesCategoryService{
@@ -58,6 +59,20 @@ class ExpenseServiceImpl(
             }.orEmpty()
 
     override fun deleteExpense(id: UUID) = expensesRepository.deleteById(id)
+
+    override fun updateExpense(dto: ExpenseDto) {
+        val newCategory = expensesCategoryRepository.findByName(dto.expensesCategory)[0].id
+        val expense = expensesRepository.findById(dto.id!!).get()
+        val newExpense = expense.copy(
+            amount = dto.amount,
+            description = dto.description,
+            expensesCategory = newCategory,
+            purchaseDate = dto.purchaseDate
+        )
+
+        expensesRepository.save(newExpense)
+
+    }
 
 }
 
