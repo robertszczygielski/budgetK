@@ -2,6 +2,7 @@ package com.forbusypeople.budgetK.services
 
 import com.forbusypeople.budgetK.controllers.ExpenseDto
 import com.forbusypeople.budgetK.controllers.ExpensesCategoryDto
+import com.forbusypeople.budgetK.errors.exceptions.ExpensesCategoryIncorrectException
 import com.forbusypeople.budgetK.repository.ExpenseEntity
 import com.forbusypeople.budgetK.repository.ExpensesCategoryEntity
 import com.forbusypeople.budgetK.repository.ExpensesCategoryRepository
@@ -61,7 +62,11 @@ class ExpenseServiceImpl(
     override fun deleteExpense(id: UUID) = expensesRepository.deleteById(id)
 
     override fun updateExpense(dto: ExpenseDto) {
-        val newCategory = expensesCategoryRepository.findByName(dto.expensesCategory)[0].id
+        val newCategory = expensesCategoryRepository
+            .findByName(dto.expensesCategory)
+            .firstOrNull()?.id
+            ?: categoryFail(dto.expensesCategory)
+
         val expense = expensesRepository.findById(dto.id!!).get()
         val newExpense = expense.copy(
             amount = dto.amount,
@@ -74,6 +79,8 @@ class ExpenseServiceImpl(
 
     }
 
+    private fun categoryFail(categoryName: String): Nothing =
+        throw ExpensesCategoryIncorrectException("Incorrect category $categoryName")
 }
 
 @Service
