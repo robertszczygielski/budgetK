@@ -62,9 +62,9 @@ Content-Type: application/json
   {
     "id": "dffb93d9-c105-48db-a672-90fda501311d",
     "amount": 1200,
-    "description": "some desc",
+    "description": "so",
     "purchaseDate": "2020-02-02T10:10:10.001Z",
-    "expensesCategory": "FU"
+    "expensesCategory": "FUN"
   }
 
 
