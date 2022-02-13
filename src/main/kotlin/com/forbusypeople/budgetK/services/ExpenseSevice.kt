@@ -2,12 +2,15 @@ package com.forbusypeople.budgetK.services
 
 import com.forbusypeople.budgetK.controllers.ExpenseDto
 import com.forbusypeople.budgetK.controllers.ExpensesCategoryDto
+import com.forbusypeople.budgetK.errors.exceptions.ExpensesAmountToLongException
 import com.forbusypeople.budgetK.errors.exceptions.ExpensesCategoryIncorrectException
+import com.forbusypeople.budgetK.errors.exceptions.ExpensesDescriptionToShortException
 import com.forbusypeople.budgetK.repository.ExpenseEntity
 import com.forbusypeople.budgetK.repository.ExpensesCategoryEntity
 import com.forbusypeople.budgetK.repository.ExpensesCategoryRepository
 import com.forbusypeople.budgetK.repository.ExpensesRepository
 import org.springframework.stereotype.Service
+import java.math.BigDecimal
 import java.util.*
 
 interface ExpenseService {
@@ -67,6 +70,11 @@ class ExpenseServiceImpl(
             .firstOrNull()?.id
             ?: categoryFail(dto.expensesCategory)
 
+        when {
+            dto.amount < BigDecimal.ZERO -> amountToLongFail(dto.amount)
+            dto.description.length < 3 -> descriptionToShortFail()
+        }
+
         val expense = expensesRepository.findById(dto.id!!).get()
         val newExpense = expense.copy(
             amount = dto.amount,
@@ -81,6 +89,12 @@ class ExpenseServiceImpl(
 
     private fun categoryFail(categoryName: String): Nothing =
         throw ExpensesCategoryIncorrectException("Incorrect category $categoryName")
+
+    private fun amountToLongFail(amount: BigDecimal): Nothing =
+        throw ExpensesAmountToLongException("Incorrect amount $amount")
+
+    private fun descriptionToShortFail(): Nothing =
+        throw ExpensesDescriptionToShortException("Description is to short")
 }
 
 @Service
