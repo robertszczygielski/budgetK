@@ -16,6 +16,9 @@ class AssetsController(
     @GetMapping
     fun getAllAssets() = assetsService.getAssets()
 
+    @GetMapping("/sum/category")
+    fun getAllSumOfAssetsByCategory() = assetsService.getAllSumOfAssetsByCategory()
+
     @PostMapping
     fun saveAllAssets(@RequestBody dtoList: List<AssetDto>) = assetsService.saveAssets(dtoList)
 
@@ -32,4 +35,8 @@ data class AssetDto(
     val category: AssetCategory,
     val incomeDate: Instant,
     val description: String
+)
+
+data class SumAssetsAmountDto(
+    val sum: Map<String, BigDecimal>
 )

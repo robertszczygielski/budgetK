@@ -1,5 +1,8 @@
 GET http://localhost:8080/assets
 
+### get sum for assets by category
+GET http://localhost:8080/assets/sum/category
+
 ### Delete assets
 DELETE http://localhost:8080/assets/55719200-5328-455b-b74d-1c31cb8a1a11
 

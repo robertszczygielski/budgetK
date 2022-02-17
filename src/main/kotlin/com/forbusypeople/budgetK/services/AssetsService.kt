@@ -1,6 +1,7 @@
 package com.forbusypeople.budgetK.services
 
 import com.forbusypeople.budgetK.controllers.AssetDto
+import com.forbusypeople.budgetK.controllers.SumAssetsAmountDto
 import com.forbusypeople.budgetK.repository.AssetEntity
 import com.forbusypeople.budgetK.repository.AssetsRepository
 import org.springframework.stereotype.Service
@@ -11,6 +12,7 @@ interface AssetsService {
     fun saveAssets(dtoList: List<AssetDto>)
     fun deleteAsset(id: UUID)
     fun updateAsset(dto: AssetDto)
+    fun getAllSumOfAssetsByCategory(): SumAssetsAmountDto
 }
 
 @Service
@@ -30,6 +32,12 @@ class AssetServiceImpl(
         val entity = assetsRepository.findById(dto.id!!).get()
         assetsRepository.save(entity.updateByDto(dto))
     }
+
+    override fun getAllSumOfAssetsByCategory() = SumAssetsAmountDto (
+        assetsRepository.findAll()
+            .groupBy { it.category.name }
+            .mapValues { (_, asset) -> asset.sumOf { it.amount } }
+    )
 
 }
 
