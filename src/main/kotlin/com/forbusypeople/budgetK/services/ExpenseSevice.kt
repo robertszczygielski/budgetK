@@ -2,6 +2,7 @@ package com.forbusypeople.budgetK.services
 
 import com.forbusypeople.budgetK.controllers.ExpenseDto
 import com.forbusypeople.budgetK.controllers.ExpensesCategoryDto
+import com.forbusypeople.budgetK.controllers.ExpensesSumByCategoryDto
 import com.forbusypeople.budgetK.errors.exceptions.ExpensesAmountToLongException
 import com.forbusypeople.budgetK.errors.exceptions.ExpensesCategoryIncorrectException
 import com.forbusypeople.budgetK.errors.exceptions.ExpensesDescriptionToShortException
@@ -19,6 +20,7 @@ interface ExpenseService {
     fun getExpensesByCategory(name: String): List<ExpenseDto>
     fun deleteExpense(id: UUID)
     fun updateExpense(dto: ExpenseDto)
+    fun getAllExpensesSumByCategory(): ExpensesSumByCategoryDto
 }
 
 interface ExpensesCategoryService{
@@ -85,6 +87,16 @@ class ExpenseServiceImpl(
 
         expensesRepository.save(newExpense)
 
+    }
+
+    override fun getAllExpensesSumByCategory(): ExpensesSumByCategoryDto {
+        val allCategory = expensesCategoryRepository.findAll()
+        val expensesSum = allCategory.groupBy(
+            { it.name },
+            { expensesRepository.findByExpensesCategory(it.id).sumOf { expense -> expense.amount } }
+        ).map { it.key to it.value.first() }.toMap()
+
+        return ExpensesSumByCategoryDto(expensesSum)
     }
 
     private fun categoryFail(categoryName: String): Nothing =

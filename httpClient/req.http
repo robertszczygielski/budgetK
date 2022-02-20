@@ -42,6 +42,9 @@ GET http://localhost:8080/expenses/category
 ### GET All Expenses
 GET  http://localhost:8080/expenses
 
+### get sum for expenses by category
+GET http://localhost:8080/expenses/sum/category
+
 ### Delete Expense
 DELETE http://localhost:8080/expenses/69b22b00-ae72-4202-95d5-97d2e8726aae
 
