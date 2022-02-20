@@ -16,6 +16,9 @@ class ExpenseController(
     @GetMapping
     fun getAll() = expenseService.getAll()
 
+    @GetMapping("/sum/category")
+    fun getAllExpensesSumByCategory() = expenseService.getAllExpensesSumByCategory()
+
     @PostMapping
     fun saveAll(@RequestBody dtoList: List<ExpenseDto>) = expenseService.saveAll(dtoList)
 
@@ -52,3 +55,8 @@ data class ExpensesCategoryDto(
     val id: UUID?,
     val name: String,
 )
+
+data class ExpensesSumByCategoryDto(
+    val sum: Map<String, BigDecimal>
+)
+
