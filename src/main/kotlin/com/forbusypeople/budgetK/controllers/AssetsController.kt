@@ -38,5 +38,10 @@ data class AssetDto(
 )
 
 data class SumAssetsAmountDto(
-    val sum: Map<String, BigDecimal>
+    val sum: Map<String, AssetsSumWithPercentDto>
+)
+
+data class AssetsSumWithPercentDto(
+    val amount: BigDecimal,
+    val percent: Float
 )
